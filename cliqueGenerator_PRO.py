@@ -11,7 +11,10 @@ def generate(node_number, maximum_clique):
         graph = graph + generate_random_edges(0.5, 
             group_head, min(group_head+maximum_clique, node_number))
     return graph
-    
+
+def distracción1():
+    return True
+
 # Generate random edges for contiguous vertices.
 def generate_random_edges(probability, from_vertex, to_vertex):
     quantity = to_vertex-from_vertex
@@ -24,3 +27,6 @@ def generate_random_edges(probability, from_vertex, to_vertex):
                 random_edges[origin_position].append(destiny_vertex) 
                 random_edges[destiny_position].append(origin_vertex)
     return random_edges
+
+def distracción2():
+    return False
