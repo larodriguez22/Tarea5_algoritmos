@@ -13,17 +13,21 @@ def fitness(board):
     board_size = len(board)
     for i in range(board_size):
         for j in range(i + 1, board_size):
-            if board[i] == board[j] or abs(i - j) == abs(board[i] - board[j]):
+            if board[i] == board[j]:
+                conflicts += 3
+            if abs(i - j) == abs(board[i] - board[j]):
                 conflicts += 1
     return conflicts
 
 def roulette_wheel_selection(population, fitness_values):
+    fitness_chance = [1 / (f+1) for f in fitness_values]
     total_fitness = sum(fitness_values)
-    roulette_value = random.uniform(0, total_fitness)
+    roulette_value = random.uniform(0, 1)
+
     cumulative_fitness = 0
 
     for i, board in enumerate(population):
-        cumulative_fitness += fitness_values[i]
+        cumulative_fitness += fitness_chance[i]
         if cumulative_fitness >= roulette_value:
             return board
 
@@ -42,9 +46,11 @@ def genetic_algorithm(board_size, population_size, num_generations, mutation_rat
     population = create_initial_population(population_size, board_size)
     average_fitness_history = []
     best_fitness_history = []
+    best_individual = None
 
     for generation in range(num_generations):
         fitness_values = [fitness(board) for board in population]
+
         average_fitness = sum(fitness_values) / population_size
         average_fitness_history.append(average_fitness)
 
@@ -52,6 +58,10 @@ def genetic_algorithm(board_size, population_size, num_generations, mutation_rat
         best_fitness_history.append(best_fitness)
 
         population.sort(key=lambda x: fitness(x))
+
+        if best_individual is None or fitness(best_individual) > fitness(population[0]):
+            best_individual = population[0]
+
 
         new_population = []
         for _ in range(population_size):
@@ -63,7 +73,9 @@ def genetic_algorithm(board_size, population_size, num_generations, mutation_rat
 
         population = new_population
 
-    return average_fitness_history, best_fitness_history
+    
+
+    return average_fitness_history, best_fitness_history, best_individual
 
 def plot_fitness_evolution(average_fitness_history, best_fitness_history, population_size):
     plt.figure(figsize=(10, 5))
@@ -82,12 +94,20 @@ def plot_fitness_evolution(average_fitness_history, best_fitness_history, popula
     plt.tight_layout()
     plt.show()
 
+def print_board(board):
+    board_size = len(board)
+    for i in range(board_size):
+        print("- " * board[i] + "X " + "- " * (board_size - board[i] - 1))
+    print("\n")
 
 if __name__ == "__main__":
     n = int(input("Numero de n reinas que se desea probar: "))
+    # n=12
     population_sizes = []
     num_poblaciones = int(input("Numero de poblaciones que se desea probar: "))
+    # num_poblaciones = 1
     for _ in range(num_poblaciones):
+        # population_sizes.append(100)
         population_sizes.append(int(input("Tamaño de la población: ")))
     # population_sizes = [int(input("Tamaño de la población: "))]
     generations = 100
@@ -99,7 +119,10 @@ if __name__ == "__main__":
     # population_sizes = [10, 100, 200, 500]
     
     for population_size in population_sizes:
-        average_fitness_history, best_fitness_history = genetic_algorithm(n, population_size, generations, mutation_rate)
+        average_fitness_history, best_fitness_history, best_individual = genetic_algorithm(n, population_size, generations, mutation_rate)
         plot_fitness_evolution(average_fitness_history, best_fitness_history, population_size)
+
+        print(f"Best individual: {best_individual}")
+        print_board(best_individual)
     
 
