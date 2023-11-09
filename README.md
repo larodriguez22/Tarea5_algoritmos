@@ -21,6 +21,12 @@ pip install matplotlib numpy
 
 El programa puede ejecutarse desde la línea de comandos proporcionando de la forma como se muestra a continuacion
 
+- Problema de máximo clique
+
+El programa se ejecuta corriéndolo sin más. Para modificar los parámetros se hace dentro del mismo notebook en una casilla del final.
+![image](https://github.com/larodriguez22/Tarea5_algoritmos/assets/26715082/bde15b1f-c0a2-4a6c-a721-f4f1e8f04aed)
+Si una gráfica aparece vacía es porque se encontró una solución en la primera generación :)
+
 ```bash
 python "$Path_archivo_python/Reinas.py"
 ```
