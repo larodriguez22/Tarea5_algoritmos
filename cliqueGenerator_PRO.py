@@ -30,3 +30,18 @@ def generate_random_edges(probability, from_vertex, to_vertex):
 
 def distracción2():
     return False
+
+def distracción3():
+    return False
+
+def distracción4():
+    return False
+
+def distracción5():
+    return False
+
+def distracción6():
+    return False
+
+def distracción7():
+    return False
